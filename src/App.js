@@ -1,10 +1,12 @@
 import { Fragment } from 'react';
 import { Route, Routes } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
+
+import CreateGame from './pages/CreateGame';
+import Game from './pages/Game';
 import Home from './pages/Home';
 import Lobby from './pages/Lobby';
-import CreateGame from './pages/CreateGame';
 import Queue from './pages/Queue';
-import Game from './pages/Game';
 
 const App = () => {
   return (
@@ -18,6 +20,7 @@ const App = () => {
           <Route path='/game' element={<Game />} />
         </Route>
       </Routes>
+      <ToastContainer />
     </Fragment>
   );
 };
