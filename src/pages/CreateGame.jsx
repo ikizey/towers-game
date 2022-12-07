@@ -22,10 +22,8 @@ const CreateGame = () => {
     };
 
     const formHandler = () => {
-        console.log(refName.current.value);
         console.log(countPlayer);
-        console.log(gameCategory);
-        // saveOptions()
+        saveOptions(refName.current.value, countPlayer, gameCategory);
         navigate('/join');
     };
 
