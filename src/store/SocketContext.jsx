@@ -24,6 +24,11 @@ const SocketContextProvider = ({ children }) => {
     //! add type check
     socket.emit(type, data);
   };
+  console.log('socketcontext');
+  const emitMe = () => {
+    socket.emit('lobby', { name: playerName, uid: playerId });
+    console.log('lobby');
+  };
 
   useEffect(() => {
     socket.on(SOCKET_ON.JOIN_ROOM, ({ roomId }) => {
@@ -31,10 +36,9 @@ const SocketContextProvider = ({ children }) => {
     });
 
     socket.on('welcome', () => {
-      console.log(playerName);
-      if (playerName !== '') {
-        socket.emit('hello', { name: playerName, uid: playerId });
-      }
+      socket.emit('hello', {});
+      console.log('welcome');
+      // }
     });
     //* error must be a string
     socket.on(SOCKET_ON.ERROR, ({ error }) => {
@@ -52,7 +56,7 @@ const SocketContextProvider = ({ children }) => {
   }, []);
 
   return (
-    <SocketContext.Provider value={{ roomId, sendData }}>
+    <SocketContext.Provider value={{ roomId, sendData, emitMe }}>
       {children}
     </SocketContext.Provider>
   );

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { nanoid } from 'nanoid';
 
 const PLAYER = Object.freeze({
@@ -7,14 +7,12 @@ const PLAYER = Object.freeze({
 });
 
 const usePlayer = () => {
-  const [playerId, setPlayerId] = useState(nanoid);
-  const [playerName, setPlayerName] = useState('');
-
-  useEffect(() => {
-    const id = localStorage.getItem(PLAYER.ID);
-    if (id) setPlayerId(id);
-    setPlayerName(localStorage.getItem(PLAYER.NAME) || '');
-  }, []);
+  const [playerId, setPlayerId] = useState(
+    localStorage.getItem(PLAYER.ID) || nanoid
+  );
+  const [playerName, setPlayerName] = useState(
+    localStorage.getItem(PLAYER.NAME) || ''
+  );
 
   const savePlayerId = (id, callback, ...args) => {
     setPlayerId(id);
