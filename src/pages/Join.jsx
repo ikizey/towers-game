@@ -1,12 +1,10 @@
 import React from 'react';
+import { useContext } from 'react';
 import papirus from '../Assets/papirus.jpg';
-import useCreategame from '../hooks/useCreategame';
+import { NameGameContext } from '../store/NameGameContext';
 
 const Join = () => {
-  const { nameGame, playersGame, categoryGame } = useCreategame();
-
-  console.log(nameGame);
-  console.log(playersGame);
+  const { nameGame, playersGame, categoryGame } = useContext(NameGameContext);
 
   return (
     <div
