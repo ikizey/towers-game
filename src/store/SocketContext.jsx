@@ -1,16 +1,14 @@
-import React, { createContext, useEffect, useState } from 'react';
+import React, { createContext, useContext, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
-import { io } from 'socket.io-client';
+import { socket } from '../socket.config.js';
+import { ConnectionHandler } from '../handlers/connectionHandler';
 import { toastConfig } from '../toastConfig';
-
-const WS_URL = process.env.REACT_APP_WS_URL || 'ws://localhost';
-const WS_PORT = process.env.REACT_APP_WS_PORT || '3001';
-const socket = io(`${WS_URL}:${WS_PORT}`);
+import { PlayerContext } from './playerContext.jsx';
 
 export const SOCKET_ON = Object.freeze({
   ERROR: 'error',
   MESSAGE: 'message',
-  ROOM: 'room',
+  JOIN_ROOM: 'join-room',
 });
 
 export const SOCKET_OUT = Object.freeze({
@@ -21,21 +19,32 @@ export const SocketContext = createContext();
 
 const SocketContextProvider = ({ children }) => {
   const [roomId, setRoomId] = useState('');
-
+  const { playerName, playerId } = useContext(PlayerContext);
   const sendData = (type, data) => {
     //! add type check
     socket.emit(type, data);
   };
+  console.log('socketcontext');
+  const emitMe = () => {
+    socket.emit('lobby', { name: playerName, uid: playerId });
+    console.log('lobby');
+  };
 
   useEffect(() => {
-    socket.on(SOCKET_ON, ({ roomId }) => {
+    socket.on(SOCKET_ON.JOIN_ROOM, ({ roomId }) => {
       setRoomId(roomId);
     });
-    //* error should be string
+
+    socket.on('welcome', () => {
+      socket.emit('hello', {});
+      console.log('welcome');
+      // }
+    });
+    //* error must be a string
     socket.on(SOCKET_ON.ERROR, ({ error }) => {
       toast.error(error, toastConfig);
     });
-    //* message should be string
+    //* message must be a string
     socket.on(SOCKET_ON.MESSAGE, ({ message }) => {
       toast.success(message, toastConfig);
     });
@@ -47,7 +56,7 @@ const SocketContextProvider = ({ children }) => {
   }, []);
 
   return (
-    <SocketContext.Provider value={{ roomId, sendData }}>
+    <SocketContext.Provider value={{ roomId, sendData, emitMe }}>
       {children}
     </SocketContext.Provider>
   );
