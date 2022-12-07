@@ -1,13 +1,9 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 import { socket } from '../socket.config.js';
-import { ConnectionHandler } from '../handlers/connectionHandler';
-import { toastConfig } from '../toastConfig';
 import { PlayerContext } from './playerContext.jsx';
 
 export const SOCKET_ON = Object.freeze({
-  ERROR: 'error',
-  MESSAGE: 'message',
   JOIN_ROOM: 'join-room',
 });
 
@@ -19,16 +15,55 @@ export const SocketContext = createContext();
 
 const SocketContextProvider = ({ children }) => {
   const [roomId, setRoomId] = useState('');
+  const navigate = useNavigate();
   const { playerName, playerId } = useContext(PlayerContext);
+
+  //*LobbyStates
+  const [lobbyPlayersList, setLobbyPlayersList] = useState([]);
+  const [lobbyGames, setLobbyGames] = useState([]);
+  //*preGameStates:
+  const [preGameId, setPreGameId] = useState('');
+  const [preGameName, setPreGameName] = useState('');
+  const [preGamePlayers, setPreGamePlayers] = useState([]);
+  const [preGameIsAdmin, setPreGameIsAdmin] = useState(false);
+  const [preGamePlayersToStart, setPreGamePlayersToStart] = useState(undefined);
+  const [preGameIsReady, setPreGameIsReady] = useState(false);
+  //*end of preGameState.
+
   const sendData = (type, data) => {
     //! add type check
     socket.emit(type, data);
   };
-  console.log('socketcontext');
+
   const emitMe = () => {
-    socket.emit('lobby', { name: playerName, uid: playerId });
-    console.log('lobby');
+    socket.emit('enters-lobby', { name: playerName, uid: playerId });
   };
+
+  //*Lobby
+  const listPreGames = () => {
+    sendData('pregames-list-public', {});
+  };
+
+  const createPreGame = (name, playersAmount, isPrivate) => {
+    sendData('pregame-create', { name, playersAmount, isPrivate });
+  };
+
+  const joinPreGame = (preGameId) => {
+    sendData('pregame-join', { preGameId });
+  };
+
+  //* --Lobby
+
+  //*PreGame
+  const leavePreGame = () => {
+    sendData('pregame-leave', {});
+  };
+
+  const startGame = () => {
+    sendData('start-game', {});
+  };
+
+  //* --PreGame
 
   useEffect(() => {
     socket.on(SOCKET_ON.JOIN_ROOM, ({ roomId }) => {
@@ -37,18 +72,83 @@ const SocketContextProvider = ({ children }) => {
 
     socket.on('welcome', () => {
       socket.emit('hello', {});
-      console.log('welcome');
       // }
     });
-    //* error must be a string
-    socket.on(SOCKET_ON.ERROR, ({ error }) => {
-      toast.error(error, toastConfig);
-    });
-    //* message must be a string
-    socket.on(SOCKET_ON.MESSAGE, ({ message }) => {
-      toast.success(message, toastConfig);
+    //*Any
+    socket.on('no-name', () => {
+      navigate('/');
     });
 
+    //*Lobby
+    socket.on('pregames-public-list', ({ gameList }) => {
+      setLobbyGames(gameList);
+    });
+
+    //* --Lobby
+
+    //*PreGame
+    socket.on('pregames-public-list', ({ gameList }) => {
+      setLobbyGames(gameList);
+    });
+
+    socket.on('pre-game-created', ({ name, id, playersToStart }) => {
+      setPreGameName(name);
+      setPreGameId(id);
+      setPreGameIsAdmin(true);
+      setPreGamePlayersToStart(playersToStart);
+      setPreGamePlayers((prevState) =>
+        prevState.push({ id: playerId, name: playerName })
+      );
+    });
+
+    socket.on('pre-game-is-full', () => {
+      navigate('/lobby');
+    });
+
+    socket.on('pre-game-new-player', ({ id, name }) => {
+      setPreGamePlayers((prevState) => prevState.push({ id, name }));
+    });
+
+    socket.on('pre-game-name', ({ id, name }) => {
+      setPreGameId(id);
+      setPreGameName(name);
+    });
+
+    socket.io('pre-game-ready', () => {
+      setPreGameIsReady(true);
+    });
+
+    socket.on('pre-game-admin-left', () => {
+      setPreGameId('');
+      setPreGameName('');
+      setPreGamePlayers([]);
+      setPreGameIsAdmin(false);
+      setPreGamePlayersToStart(undefined);
+      setPreGameIsReady(false);
+      navigate('/lobby');
+    });
+
+    socket.on('pre-game-left', () => {
+      setPreGameId('');
+      setPreGameName('');
+      setPreGamePlayers([]);
+      setPreGameIsAdmin(false);
+      setPreGamePlayersToStart(undefined);
+      setPreGameIsReady(false);
+      navigate('/lobby');
+    });
+
+    socket.on('pre-game-player-left', ({ id, name }) => {
+      const playerIndex = preGamePlayers.findIndex(
+        (player) => player.id === id
+      );
+      setPreGamePlayers((prev) => prev.splice(playerIndex, 1));
+    });
+
+    socket.on('pre-game-not-ready', () => {
+      setPreGameIsReady(false);
+    });
+    //* --PreGame
     return () => {
       socket.off(SOCKET_ON.ERROR);
       socket.off(SOCKET_ON.MESSAGE);
@@ -56,7 +156,28 @@ const SocketContextProvider = ({ children }) => {
   }, []);
 
   return (
-    <SocketContext.Provider value={{ roomId, sendData, emitMe }}>
+    <SocketContext.Provider
+      value={{
+        roomId,
+        sendData,
+        emitMe,
+
+        lobbyPlayersList,
+        lobbyGames,
+        listPreGames,
+        createPreGame,
+        joinPreGame,
+
+        preGameId,
+        preGameName,
+        preGamePlayers,
+        preGameIsAdmin,
+        preGamePlayersToStart,
+        preGameIsReady,
+        leavePreGame,
+        startGame,
+      }}
+    >
       {children}
     </SocketContext.Provider>
   );
