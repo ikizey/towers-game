@@ -29,17 +29,21 @@ const Join = () => {
       <div className='flex flex-1 justify-evenly'>
         <section className='w-1/3 flex flex-col items-stretch h-full'>
           <div className='p-4 text-2xl leading-6 flex justify-between  w-full'>
-            <p className='text-4xl font-bold'>Name's Game</p>
+            <p className='text-4xl font-bold'>Game's id</p>
+            <p className='text-4xl font-bold text-orange-600'>{preGameId}</p>
+          </div>
+          <div className='p-4 text-2xl leading-6 flex justify-between  w-full'>
+            <p className='text-4xl font-bold'>Game's Name</p>
             <p className='text-4xl font-bold text-orange-600'>{preGameName}</p>
           </div>
           <div className='p-4 text-2xl leading-6 flex justify-between  w-full'>
-            <p className='text-4xl font-bold'>Players</p>
+            <p className='text-4xl font-bold'>Players to Start</p>
             <p className='text-4xl font-bold text-orange-600'>
               {preGamePlayersToStart}
             </p>
           </div>
           <div className='p-4 text-2xl leading-6 flex justify-between  w-full grow'>
-            <p className='text-4xl font-bold'>Category</p>
+            <p className='text-4xl font-bold'>Type</p>
             <p className='text-4xl font-bold text-orange-600'>
               {preGameIsPrivate ? 'Private' : 'Public'}
             </p>
