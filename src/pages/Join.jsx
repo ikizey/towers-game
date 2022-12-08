@@ -1,12 +1,11 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import papirus from '../Assets/papirus.jpg';
-import useCreategame from '../hooks/useCreategame';
+import { NameGameContext } from '../store/NameGameContext';
+import { PlayerContext } from '../store/playerContext';
 
 const Join = () => {
-  const { nameGame, playersGame, categoryGame } = useCreategame();
-
-  console.log(nameGame);
-  console.log(playersGame);
+  const { nameGame, playersGame, categoryGame } = useContext(NameGameContext);
+  const { playerName } = useContext(PlayerContext);
 
   return (
     <div
@@ -24,15 +23,15 @@ const Join = () => {
         <section className='w-1/3 flex flex-col items-stretch h-full'>
           <div className='p-4 text-2xl leading-6 flex justify-between  w-full'>
             <p className='text-4xl font-bold'>Name's Game</p>
-            <p>{nameGame}</p>
+            <p className='text-4xl text-orange-600 font-bold'>{nameGame}</p>
           </div>
           <div className='p-4 text-2xl leading-6 flex justify-between  w-full'>
             <p className='text-4xl font-bold'>Players</p>
-            <p>{playersGame}</p>
+            <p className='text-4xl text-orange-600 font-bold'>{playersGame}</p>
           </div>
           <div className='p-4 text-2xl leading-6 flex justify-between  w-full grow'>
             <p className='text-4xl font-bold'>Category</p>
-            <p>{categoryGame}</p>
+            <p className='text-4xl text-orange-600 font-bold'>{categoryGame}</p>
           </div>
           <div className='text-4xl bg-orange-400 font-bold text-center border-2 border-red-700 rounded-xl shadow-lg shadow-current active:shadow-none active:scale-90'>
             START
@@ -41,7 +40,7 @@ const Join = () => {
         <section className='border border-red-700 block w-1/4 rounded-3xl p-4 text-4xl font-bold'>
           <p className='font-bold text-3xl text-orange-600'>Players</p>
           <ul>
-            <li>playername</li>
+            <li>{playerName}</li>
           </ul>
         </section>
       </div>
