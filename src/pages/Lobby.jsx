@@ -7,7 +7,8 @@ import CreateGame from './CreateGame';
 
 const Lobby = () => {
   const { playerName } = useContext(PlayerContext);
-  const { lobbyGames, lobbyPlayersList } = useContext(SocketContext);
+  const { lobbyGames, lobbyPlayersList, listPreGames } =
+    useContext(SocketContext);
   const [createGames, setCreateGames] = useState(false);
 
   const { emitMe } = useContext(SocketContext);
@@ -18,6 +19,7 @@ const Lobby = () => {
 
   useEffect(() => {
     emitMe();
+    listPreGames();
   }, []);
 
   return (

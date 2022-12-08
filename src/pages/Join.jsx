@@ -41,7 +41,7 @@ const Join = () => {
           <div className='p-4 text-2xl leading-6 flex justify-between  w-full grow'>
             <p className='text-4xl font-bold'>Category</p>
             <p className='text-4xl font-bold text-orange-600'>
-              {preGameIsPrivate}
+              {preGameIsPrivate ? 'Private' : 'Public'}
             </p>
           </div>
           {preGameIsReady && preGameIsAdmin && (
