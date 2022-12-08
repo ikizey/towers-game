@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom';
 
 const Lobby = () => {
   const { playerName } = useContext(PlayerContext);
-  const [gameSelected, setgameSelected] = useState();
+  const [gameSelected, setGameSelected] = useState();
   const { lobbyGames, lobbyPlayersList, listPreGames } =
     useContext(SocketContext);
   const [createGames, setCreateGames] = useState(false);
@@ -22,8 +22,8 @@ const Lobby = () => {
 
   const selectHandler = (gameId) => {
     gameSelected === gameId
-      ? setgameSelected(undefined)
-      : setgameSelected(gameId);
+      ? setGameSelected(undefined)
+      : setGameSelected(gameId);
   };
 
   const joinHandler = () => {
@@ -64,20 +64,16 @@ const Lobby = () => {
               Create
             </button>
 
-            <a
-              href='#'
+            <div
               className='p-4 text-2xl leading-6 rounded-3xl border border-red-800 w-40 block text-center  hover:bg-red-400 font-bold hover:scale-110 ease-out duration-200'
               onClick={joinHandler}
             >
               Join
-            </a>
+            </div>
 
-            <a
-              href='#'
-              className='p-4 text-2xl leading-6 rounded-3xl border border-red-800 w-40 block text-center  hover:bg-red-400 font-bold hover:scale-110 ease-out duration-200'
-            >
+            <div className='p-4 text-2xl leading-6 rounded-3xl border border-red-800 w-40 block text-center  hover:bg-red-400 font-bold hover:scale-110 ease-out duration-200'>
               Queue
-            </a>
+            </div>
           </div>
           <div className='z-10 mt-3 text-center p-4 text-2xl leading-6 rounded-3xl border border-red-800'>
             <p>Statistic</p>
@@ -112,7 +108,9 @@ const Lobby = () => {
           <ul>
             {lobbyPlayersList.map((player) => (
               <li key={player.id}>
-                {player.name} / {player.status}
+                <div className='flex justify-between'>
+                  <span>{player.name}</span> <span>{player.status}</span>
+                </div>
               </li>
             ))}
           </ul>
