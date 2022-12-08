@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react';
 import { useEffect } from 'react';
 import papirus from '../Assets/papirus.jpg';
 import { SocketContext } from '../store/SocketContext';
-import CreateGame from './CreateGame';
+import CreateGame from '../CreateGame';
 
 const Lobby = () => {
   const [gameSelected, setGameSelected] = useState();
