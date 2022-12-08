@@ -28,6 +28,7 @@ const SocketContextProvider = ({ children }) => {
   const [preGameIsAdmin, setPreGameIsAdmin] = useState(false);
   const [preGamePlayersToStart, setPreGamePlayersToStart] = useState(undefined);
   const [preGameIsReady, setPreGameIsReady] = useState(false);
+  const [preGameIsPrivate, setPreGameIsPrivate] = useState(false);
   //*end of preGameState.
 
   const sendData = (type, data) => {
@@ -45,6 +46,9 @@ const SocketContextProvider = ({ children }) => {
   };
 
   const createPreGame = (name, playersAmount, isPrivate) => {
+    setPreGameName(name);
+    setPreGamePlayersToStart(playersAmount);
+    setPreGameIsPrivate(isPrivate);
     sendData('pregame-create', { name, playersAmount, isPrivate });
   };
 
@@ -96,9 +100,13 @@ const SocketContextProvider = ({ children }) => {
       setPreGameId(id);
       setPreGameIsAdmin(true);
       setPreGamePlayersToStart(playersToStart);
-      setPreGamePlayers((prevState) =>
-        prevState.push({ id: playerId, name: playerName })
-      );
+      setPreGamePlayers((prevState) => {
+        if (prevState.findIndex((player) => player.id === playerId) === -1) {
+          return [...prevState, { id: playerId, name: playerName }];
+        } else {
+          return [...prevState];
+        }
+      });
     });
 
     socket.on('pre-game-is-full', () => {
@@ -106,7 +114,13 @@ const SocketContextProvider = ({ children }) => {
     });
 
     socket.on('pre-game-new-player', ({ id, name }) => {
-      setPreGamePlayers((prevState) => prevState.push({ id, name }));
+      setPreGamePlayers((prevState) => {
+        if (prevState.findIndex((player) => player.id === id) === -1) {
+          return [...prevState, { id, name }];
+        } else {
+          return [...prevState];
+        }
+      });
     });
 
     socket.on('pre-game-name', ({ id, name }) => {
@@ -114,7 +128,7 @@ const SocketContextProvider = ({ children }) => {
       setPreGameName(name);
     });
 
-    socket.io('pre-game-ready', () => {
+    socket.on('pre-game-ready', () => {
       setPreGameIsReady(true);
     });
 
@@ -142,7 +156,10 @@ const SocketContextProvider = ({ children }) => {
       const playerIndex = preGamePlayers.findIndex(
         (player) => player.id === id
       );
-      setPreGamePlayers((prev) => prev.splice(playerIndex, 1));
+      setPreGamePlayers((prev) => [
+        ...prev.slice(0, playerIndex),
+        ...prev.slice(playerIndex),
+      ]);
     });
 
     socket.on('pre-game-not-ready', () => {
@@ -152,6 +169,7 @@ const SocketContextProvider = ({ children }) => {
     return () => {
       socket.off(SOCKET_ON.ERROR);
       socket.off(SOCKET_ON.MESSAGE);
+      //...
     };
   }, []);
 
@@ -174,6 +192,7 @@ const SocketContextProvider = ({ children }) => {
         preGameIsAdmin,
         preGamePlayersToStart,
         preGameIsReady,
+        preGameIsPrivate,
         leavePreGame,
         startGame,
       }}
