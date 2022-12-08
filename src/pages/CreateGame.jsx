@@ -2,16 +2,19 @@ import React, { useContext } from 'react';
 import { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { NameGameContext } from '../store/NameGameContext';
+import { SocketContext } from '../store/SocketContext';
 
 const CreateGame = () => {
+  const { createPreGame } = useContext(SocketContext);
+
   const [countPlayer, setCountPlayer] = useState('2');
   const [gameCategory, setGameCategory] = useState('Public');
   const refName = useRef();
   const navigate = useNavigate();
   const { saveOptions } = useContext(NameGameContext);
 
-  let category = ['Public', 'Private'];
-  let players = ['2', '3', '4'];
+  const category = ['Public', 'Private'];
+  const players = ['2', '3', '4'];
 
   const playerHandler = (event) => {
     setCountPlayer(event.target.value);
@@ -21,8 +24,11 @@ const CreateGame = () => {
     setGameCategory(event.target.value);
   };
 
-  const formHandler = () => {
+  const formHandler = (event) => {
+    event.preventDefault();
     saveOptions(refName.current.value, countPlayer, gameCategory);
+    createPreGame(refName.current.value, countPlayer, gameCategory);
+
     navigate('/join');
   };
 
