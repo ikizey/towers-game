@@ -5,24 +5,24 @@ import { NameGameContext } from '../store/NameGameContext';
 import { SocketContext } from '../store/SocketContext';
 import ReactDOM from 'react-dom';
 
+const category = [
+  ['Public', false],
+  ['Private', true],
+];
+
+const players = [2, 3, 4];
+
 const CreateGame = () => {
   const { createPreGame } = useContext(SocketContext);
 
-  const [countPlayer, setCountPlayer] = useState('2');
+  const [countPlayer, setCountPlayer] = useState(2);
   const [isPrivate, setIsPrivate] = useState(false);
   const refName = useRef();
   const navigate = useNavigate();
   const { saveOptions } = useContext(NameGameContext);
 
-  const category = [
-    ///* REVERSED FOR VISUALS!
-    ['Public', false],
-    ['Private', true],
-  ];
-  const players = ['2', '3', '4'];
-
   const playerHandler = (event) => {
-    setCountPlayer(event.target.value);
+    setCountPlayer(~~event.target.value);
   };
 
   const categoryHandler = (event) => {
@@ -32,7 +32,6 @@ const CreateGame = () => {
   const formHandler = (event) => {
     event.preventDefault();
     saveOptions(refName.current.value, countPlayer, isPrivate);
-    console.log('gameCategory: ' + isPrivate);
     createPreGame(refName.current.value, countPlayer, isPrivate);
 
     navigate('/join');
