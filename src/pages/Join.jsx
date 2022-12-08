@@ -30,15 +30,19 @@ const Join = () => {
         <section className='w-1/3 flex flex-col items-stretch h-full'>
           <div className='p-4 text-2xl leading-6 flex justify-between  w-full'>
             <p className='text-4xl font-bold'>Name's Game</p>
-            <p>{preGameName}</p>
+            <p className='text-4xl font-bold text-orange-600'>{preGameName}</p>
           </div>
           <div className='p-4 text-2xl leading-6 flex justify-between  w-full'>
             <p className='text-4xl font-bold'>Players</p>
-            <p>{preGamePlayersToStart}</p>
+            <p className='text-4xl font-bold text-orange-600'>
+              {preGamePlayersToStart}
+            </p>
           </div>
           <div className='p-4 text-2xl leading-6 flex justify-between  w-full grow'>
             <p className='text-4xl font-bold'>Category</p>
-            <p>{preGameIsPrivate}</p>
+            <p className='text-4xl font-bold text-orange-600'>
+              {preGameIsPrivate}
+            </p>
           </div>
           {preGameIsReady && preGameIsAdmin && (
             <div className='text-4xl bg-orange-400 font-bold text-center border-2 border-red-700 rounded-xl shadow-lg shadow-current active:shadow-none active:scale-90'>
