@@ -7,6 +7,7 @@ import CreateGame from './CreateGame';
 
 const Lobby = () => {
   const { playerName } = useContext(PlayerContext);
+  const [gameSelected, setgameSelected] = useState(false);
   const { lobbyGames, lobbyPlayersList, listPreGames } =
     useContext(SocketContext);
   const [createGames, setCreateGames] = useState(false);
@@ -15,6 +16,12 @@ const Lobby = () => {
 
   const gameHandler = () => {
     setCreateGames(true);
+  };
+
+  const selectHandler = (gameId) => {
+    gameSelected === gameId
+      ? setgameSelected(undefined)
+      : setgameSelected(gameId);
   };
 
   useEffect(() => {
@@ -69,7 +76,15 @@ const Lobby = () => {
             <ul>
               {lobbyGames.length > 0 ? (
                 lobbyGames.map((game) => (
-                  <li key={game.id} className='border-b-2 border-stone-500'>
+                  <li
+                    key={game.id}
+                    className={`border-b-2 border-stone-500 cursor-pointer hover:font-bold ${
+                      gameSelected === game.id ? 'bg-blue-500' : ''
+                    }`}
+                    onClick={(_) => {
+                      selectHandler(game.id);
+                    }}
+                  >
                     <span>{game.name}</span>
                     <span>
                       {game.playersAmount}/{game.playersToStart}
