@@ -4,15 +4,17 @@ import papirus from '../Assets/papirus.jpg';
 import { PlayerContext } from '../store/playerContext';
 import { SocketContext } from '../store/SocketContext';
 import CreateGame from './CreateGame';
+import { useNavigate } from 'react-router-dom';
 
 const Lobby = () => {
   const { playerName } = useContext(PlayerContext);
-  const [gameSelected, setgameSelected] = useState(false);
+  const [gameSelected, setgameSelected] = useState();
   const { lobbyGames, lobbyPlayersList, listPreGames } =
     useContext(SocketContext);
   const [createGames, setCreateGames] = useState(false);
+  const navigate = useNavigate();
 
-  const { emitMe } = useContext(SocketContext);
+  const { emitMe, joinPreGame } = useContext(SocketContext);
 
   const gameHandler = () => {
     setCreateGames(true);
@@ -22,6 +24,13 @@ const Lobby = () => {
     gameSelected === gameId
       ? setgameSelected(undefined)
       : setgameSelected(gameId);
+  };
+
+  const joinHandler = () => {
+    if (gameSelected) {
+      joinPreGame(gameSelected);
+      navigate('/join');
+    }
   };
 
   useEffect(() => {
@@ -58,6 +67,7 @@ const Lobby = () => {
             <a
               href='#'
               className='p-4 text-2xl leading-6 rounded-3xl border border-red-800 w-40 block text-center  hover:bg-red-400 font-bold hover:scale-110 ease-out duration-200'
+              onClick={joinHandler}
             >
               Join
             </a>
