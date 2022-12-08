@@ -1,9 +1,11 @@
 import React from 'react';
 import { useContext } from 'react';
 import papirus from '../Assets/papirus.jpg';
+import { PlayerContext } from '../store/playerContext';
 import { SocketContext } from '../store/SocketContext';
 
 const Join = () => {
+  const { playerId } = useContext(PlayerContext);
   const {
     preGameName,
     preGameId,
@@ -58,7 +60,16 @@ const Join = () => {
           <p className='font-bold text-3xl text-orange-600'>Players</p>
           <ul>
             {preGamePlayers.map((player) => (
-              <li key={player.id}>{player.name}</li>
+              <li key={player.id}>
+                <div className='flex justify-between'>
+                  <p className='flex-1'>{player.name}</p>
+                  {preGameIsAdmin && player.id !== playerId && (
+                    <p className='px-2 border border-red-500 rounded-md text-red-500 hover:text-red-700 hover:bg-red-200'>
+                      x
+                    </p>
+                  )}
+                </div>
+              </li>
             ))}
           </ul>
         </section>

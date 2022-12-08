@@ -1,18 +1,14 @@
 import React, { useContext, useState } from 'react';
 import { useEffect } from 'react';
 import papirus from '../Assets/papirus.jpg';
-import { PlayerContext } from '../store/playerContext';
 import { SocketContext } from '../store/SocketContext';
 import CreateGame from './CreateGame';
-import { useNavigate } from 'react-router-dom';
 
 const Lobby = () => {
-  const { playerName } = useContext(PlayerContext);
   const [gameSelected, setGameSelected] = useState();
   const { lobbyGames, lobbyPlayersList, listPreGames } =
     useContext(SocketContext);
   const [createGames, setCreateGames] = useState(false);
-  const navigate = useNavigate();
 
   const { emitMe, joinPreGame } = useContext(SocketContext);
 
@@ -27,10 +23,7 @@ const Lobby = () => {
   };
 
   const joinHandler = () => {
-    if (gameSelected) {
-      joinPreGame(gameSelected);
-      navigate('/join');
-    }
+    gameSelected && joinPreGame(gameSelected);
   };
 
   useEffect(() => {

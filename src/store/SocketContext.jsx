@@ -67,6 +67,10 @@ const SocketContextProvider = ({ children }) => {
     sendData('start-game', {});
   };
 
+  const kickPlayer = (id) => {
+    sendData('pre-game-kick', { clientUid: id });
+  };
+
   //* --PreGame
 
   useEffect(() => {
@@ -114,6 +118,7 @@ const SocketContextProvider = ({ children }) => {
       setPreGameId(id);
       setPreGameName(name);
       setPreGamePlayersToStart(playersToStart);
+      navigate('/join');
     });
 
     socket.on('pre-game-ready', () => {
@@ -154,6 +159,16 @@ const SocketContextProvider = ({ children }) => {
       navigate('/lobby');
     });
 
+    socket.on('kicked-from-pre-game', () => {
+      setPreGameId('');
+      setPreGameName('');
+      setPreGamePlayers([]);
+      setPreGameIsAdmin(false);
+      setPreGamePlayersToStart(undefined);
+      setPreGameIsReady(false);
+      navigate('/lobby');
+    });
+
     //* --PreGame
     return () => {
       socket.off(SOCKET_ON.ERROR);
@@ -183,6 +198,7 @@ const SocketContextProvider = ({ children }) => {
         preGameIsReady,
         preGameIsPrivate,
         leavePreGame,
+        kickPlayer,
         startGame,
       }}
     >
