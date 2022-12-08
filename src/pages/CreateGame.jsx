@@ -33,7 +33,7 @@ const CreateGame = () => {
   };
 
   return (
-    <div className='w-2/5 h-1/3 bg-yellow-200 z-50 absolute top-1/3 left-1/4 border-red-700 border-2 rounded-3xl p-8 backdrop-blur-sm'>
+    <div className='max-w-2xl max-h-80 bg-yellow-200 z-50 absolute top-1/3 left-1/4 border-red-700 border-2 rounded-3xl p-8 backdrop-blur-sm'>
       <form onSubmit={formHandler}>
         <div>
           <label className='text-2xl font-bold mr-5'>Name's Game</label>
@@ -42,7 +42,7 @@ const CreateGame = () => {
             type='text'
             ref={refName}
           />
-          <div className='mt-12 flex gap-8 items-center'>
+          <div className='mt-10 flex gap-8 items-center'>
             <p className='text-2xl font-bold'>Players</p>
             {players.map((item) => (
               <div key={item} className='relative focus:outline-none'>
@@ -67,7 +67,7 @@ const CreateGame = () => {
             ))}
           </div>
           <div>
-            <div className='mt-12 flex gap-8 items-center'>
+            <div className='mt-10  flex gap-8 items-center'>
               <p className='text-2xl font-bold'>Category</p>
               {category.map((item) => (
                 <div key={item} className='relative focus:outline-none'>
