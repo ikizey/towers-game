@@ -4,7 +4,7 @@ import papirus from '../Assets/papirus.jpg';
 import { PlayerContext } from '../store/playerContext';
 import { SocketContext } from '../store/SocketContext';
 
-const Join = () => {
+const PreGame = () => {
   const { playerId } = useContext(PlayerContext);
   const {
     preGameName,
@@ -78,4 +78,4 @@ const Join = () => {
   );
 };
 
-export default Join;
+export default PreGame;
