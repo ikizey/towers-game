@@ -127,9 +127,10 @@ const SocketContextProvider = ({ children }) => {
       });
     });
 
-    socket.on('pre-game-name', ({ id, name }) => {
+    socket.on('pre-game-name', ({ id, name, playersToStart }) => {
       setPreGameId(id);
       setPreGameName(name);
+      setPreGamePlayersToStart(playersToStart);
     });
 
     socket.on('pre-game-ready', () => {
