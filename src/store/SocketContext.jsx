@@ -88,6 +88,10 @@ const SocketContextProvider = ({ children }) => {
       setLobbyGames(gameList);
     });
 
+    socket.on('players-all', ({ players }) => {
+      setLobbyPlayersList(players); //{id, name, status}
+    });
+
     //* --Lobby
 
     //*PreGame

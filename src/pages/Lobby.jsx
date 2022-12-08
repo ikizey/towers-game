@@ -7,7 +7,7 @@ import CreateGame from './CreateGame';
 
 const Lobby = () => {
   const { playerName } = useContext(PlayerContext);
-  const { lobbyGames } = useContext(SocketContext);
+  const { lobbyGames, lobbyPlayersList } = useContext(SocketContext);
   const [createGames, setCreateGames] = useState(false);
 
   const { emitMe } = useContext(SocketContext);
@@ -83,7 +83,11 @@ const Lobby = () => {
         <section className='z-10 border border-red-700 block w-1/3 rounded-3xl p-4 text-4xl font-bold'>
           <p className='font-bold text-3xl text-orange-600'>Players</p>
           <ul>
-            <li>{playerName}</li>
+            {lobbyPlayersList.map((player) => (
+              <li key={player.id}>
+                {player.name} / {player.status}
+              </li>
+            ))}
           </ul>
         </section>
       </div>
