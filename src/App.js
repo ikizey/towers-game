@@ -19,7 +19,7 @@ const App = () => {
           <Route path='create-game' element={<CreateGame />} />
           <Route path='queue' element={<Queue />} />
           <Route path='game' element={<Game />} />
-          <Route path='create-game' element={<Join />} />
+          <Route path='join' element={<Join />} />
         </Route>
       </Routes>
       <ToastContainer />
