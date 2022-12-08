@@ -2,6 +2,7 @@ import React, { createContext, useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { socket } from '../socket.config.js';
 import { PlayerContext } from './playerContext.jsx';
+import { PAGE } from '../pages/page';
 
 export const SOCKET_ON = Object.freeze({
   JOIN_ROOM: 'join-room',
@@ -84,7 +85,7 @@ const SocketContextProvider = ({ children }) => {
     });
     //*Any
     socket.on('no-name', () => {
-      navigate('/');
+      navigate(PAGE.HOME);
     });
 
     //*Lobby
@@ -118,7 +119,7 @@ const SocketContextProvider = ({ children }) => {
       setPreGameId(id);
       setPreGameName(name);
       setPreGamePlayersToStart(playersToStart);
-      navigate('/join');
+      navigate(PAGE.PRE_GAME);
     });
 
     socket.on('pre-game-ready', () => {
@@ -136,7 +137,7 @@ const SocketContextProvider = ({ children }) => {
       setPreGameIsAdmin(false);
       setPreGamePlayersToStart(undefined);
       setPreGameIsReady(false);
-      navigate('/lobby');
+      navigate(PAGE.LOBBY);
     });
 
     socket.on('pre-game-admin-left', () => {
@@ -146,7 +147,7 @@ const SocketContextProvider = ({ children }) => {
       setPreGameIsAdmin(false);
       setPreGamePlayersToStart(undefined);
       setPreGameIsReady(false);
-      navigate('/lobby');
+      navigate(PAGE.LOBBY);
     });
 
     socket.on('pre-game-left', () => {
@@ -156,7 +157,7 @@ const SocketContextProvider = ({ children }) => {
       setPreGameIsAdmin(false);
       setPreGamePlayersToStart(undefined);
       setPreGameIsReady(false);
-      navigate('/lobby');
+      navigate(PAGE.LOBBY);
     });
 
     socket.on('kicked-from-pre-game', () => {
@@ -166,7 +167,7 @@ const SocketContextProvider = ({ children }) => {
       setPreGameIsAdmin(false);
       setPreGamePlayersToStart(undefined);
       setPreGameIsReady(false);
-      navigate('/lobby');
+      navigate(PAGE.LOBBY);
     });
 
     //* --PreGame

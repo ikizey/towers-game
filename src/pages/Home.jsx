@@ -2,6 +2,7 @@ import React, { useRef, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import papirus from '../Assets/papirus.jpg';
 import { PlayerContext } from '../store/playerContext';
+import { PAGE } from './page';
 
 const Home = () => {
   const { playerName, saveName } = useContext(PlayerContext);
@@ -12,7 +13,7 @@ const Home = () => {
   const playHandler = () => {
     if (nameRef.current.value) {
       saveName(nameRef.current.value);
-      navigate('/lobby');
+      navigate(PAGE.LOBBY);
       return;
     }
     alert('Enter name, Please!');

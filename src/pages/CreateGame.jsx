@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { NameGameContext } from '../store/NameGameContext';
 import { SocketContext } from '../store/SocketContext';
 import ReactDOM from 'react-dom';
+import { PAGE } from './page';
 
 const category = [
   ['Public', false],
@@ -34,7 +35,7 @@ const CreateGame = () => {
     saveOptions(refName.current.value, countPlayer, isPrivate);
     createPreGame(refName.current.value, countPlayer, isPrivate);
 
-    navigate('/join');
+    navigate(PAGE.PRE_GAME);
   };
 
   return ReactDOM.createPortal(
