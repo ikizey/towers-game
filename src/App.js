@@ -10,21 +10,21 @@ import Queue from './pages/Queue';
 import Join from './pages/Join';
 
 const App = () => {
-    return (
-        <Fragment>
-            <Routes>
-                <Route path='/'>
-                    <Route index element={<Home />} />
-                    <Route path='/lobby' element={<Lobby />} />
-                    <Route path='/create-game' element={<CreateGame />} />
-                    <Route path='/queue' element={<Queue />} />
-                    <Route path='/game' element={<Game />} />
-                    <Route path='/join' element={<Join />} />
-                </Route>
-            </Routes>
-            <ToastContainer />
-        </Fragment>
-    );
+  return (
+    <Fragment>
+      <Routes>
+        <Route path='/'>
+          <Route index element={<Home />} />
+          <Route path='lobby' element={<Lobby />} />
+          <Route path='create-game' element={<CreateGame />} />
+          <Route path='queue' element={<Queue />} />
+          <Route path='game' element={<Game />} />
+          <Route path='join' element={<Join />} />
+        </Route>
+      </Routes>
+      <ToastContainer />
+    </Fragment>
+  );
 };
 
 export default App;

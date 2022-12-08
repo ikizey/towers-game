@@ -1,11 +1,18 @@
-import React, { useContext } from 'react';
+import React from 'react';
+import { useContext } from 'react';
 import papirus from '../Assets/papirus.jpg';
-import { NameGameContext } from '../store/NameGameContext';
-import { PlayerContext } from '../store/playerContext';
+import { SocketContext } from '../store/SocketContext';
 
 const Join = () => {
-  const { nameGame, playersGame, categoryGame } = useContext(NameGameContext);
-  const { playerName } = useContext(PlayerContext);
+  const {
+    preGameName,
+    preGameId,
+    preGamePlayers,
+    preGameIsAdmin,
+    preGamePlayersToStart,
+    preGameIsReady,
+    preGameIsPrivate,
+  } = useContext(SocketContext);
 
   return (
     <div
@@ -23,24 +30,28 @@ const Join = () => {
         <section className='w-1/3 flex flex-col items-stretch h-full'>
           <div className='p-4 text-2xl leading-6 flex justify-between  w-full'>
             <p className='text-4xl font-bold'>Name's Game</p>
-            <p className='text-4xl text-orange-600 font-bold'>{nameGame}</p>
+            <p>{preGameName}</p>
           </div>
           <div className='p-4 text-2xl leading-6 flex justify-between  w-full'>
             <p className='text-4xl font-bold'>Players</p>
-            <p className='text-4xl text-orange-600 font-bold'>{playersGame}</p>
+            <p>{preGamePlayersToStart}</p>
           </div>
           <div className='p-4 text-2xl leading-6 flex justify-between  w-full grow'>
             <p className='text-4xl font-bold'>Category</p>
-            <p className='text-4xl text-orange-600 font-bold'>{categoryGame}</p>
+            <p>{preGameIsPrivate}</p>
           </div>
-          <div className='text-4xl bg-orange-400 font-bold text-center border-2 border-red-700 rounded-xl shadow-lg shadow-current active:shadow-none active:scale-90'>
-            START
-          </div>
+          {preGameIsReady && preGameIsAdmin && (
+            <div className='text-4xl bg-orange-400 font-bold text-center border-2 border-red-700 rounded-xl shadow-lg shadow-current active:shadow-none active:scale-90'>
+              START
+            </div>
+          )}
         </section>
         <section className='border border-red-700 block w-1/4 rounded-3xl p-4 text-4xl font-bold'>
           <p className='font-bold text-3xl text-orange-600'>Players</p>
           <ul>
-            <li>{playerName}</li>
+            {preGamePlayers.map((player) => (
+              <li key={player.id}>{player.name}</li>
+            ))}
           </ul>
         </section>
       </div>

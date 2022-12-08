@@ -7,6 +7,7 @@ import CreateGame from './CreateGame';
 
 const Lobby = () => {
   const { playerName } = useContext(PlayerContext);
+  const { lobbyGames } = useContext(SocketContext);
   const [createGames, setCreateGames] = useState(false);
 
   const { emitMe } = useContext(SocketContext);
@@ -64,11 +65,18 @@ const Lobby = () => {
           </div>
           <div className='z-10 flex grow mt-3 text-center p-4 text-2xl leading-6 rounded-3xl border border-red-800'>
             <ul>
-              <li className='border-b-2 border-stone-500'>1</li>
-              <li>2</li>
-              <li>3</li>
-              <li>4</li>
-              <li>5</li>
+              {lobbyGames.length > 0 ? (
+                lobbyGames.map((game) => (
+                  <li key={game.id} className='border-b-2 border-stone-500'>
+                    <span>{game.name}</span>
+                    <span>
+                      {game.playersAmount}/{game.playersToStart}
+                    </span>
+                  </li>
+                ))
+              ) : (
+                <div>No Games Yet</div>
+              )}
             </ul>
           </div>
         </section>

@@ -10,14 +10,14 @@ import './index.css';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <PlayerContextProvider>
-      <SocketContextProvider>
-        <NameGameContextProvider>
-          <BrowserRouter>
+    <BrowserRouter>
+      <PlayerContextProvider>
+        <SocketContextProvider>
+          <NameGameContextProvider>
             <App />
-          </BrowserRouter>
-        </NameGameContextProvider>
-      </SocketContextProvider>
-    </PlayerContextProvider>
+          </NameGameContextProvider>
+        </SocketContextProvider>
+      </PlayerContextProvider>
+    </BrowserRouter>
   </React.StrictMode>
 );
