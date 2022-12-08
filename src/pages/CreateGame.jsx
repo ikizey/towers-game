@@ -9,12 +9,16 @@ const CreateGame = () => {
   const { createPreGame } = useContext(SocketContext);
 
   const [countPlayer, setCountPlayer] = useState('2');
-  const [gameCategory, setGameCategory] = useState('Public');
+  const [isPrivate, setIsPrivate] = useState(false);
   const refName = useRef();
   const navigate = useNavigate();
   const { saveOptions } = useContext(NameGameContext);
 
-  const category = ['Public', 'Private'];
+  const category = [
+    ///* REVERSED FOR VISUALS!
+    ['Public', false],
+    ['Private', true],
+  ];
   const players = ['2', '3', '4'];
 
   const playerHandler = (event) => {
@@ -22,13 +26,14 @@ const CreateGame = () => {
   };
 
   const categoryHandler = (event) => {
-    setGameCategory(event.target.value);
+    setIsPrivate(event.target.value === 'Private');
   };
 
   const formHandler = (event) => {
     event.preventDefault();
-    saveOptions(refName.current.value, countPlayer, gameCategory);
-    createPreGame(refName.current.value, countPlayer, gameCategory);
+    saveOptions(refName.current.value, countPlayer, isPrivate);
+    console.log('gameCategory: ' + isPrivate);
+    createPreGame(refName.current.value, countPlayer, isPrivate);
 
     navigate('/join');
   };
@@ -77,14 +82,14 @@ const CreateGame = () => {
                       <input
                         type='radio'
                         name='category'
-                        value={item}
+                        value={item[0]}
                         className='hidden'
                         onChange={categoryHandler}
-                        checked={countPlayer === item}
+                        checked={countPlayer === item[0]}
                       />
                       <span
                         className={`w-28 h-10 border rounded-3 border-red-500 font-bold text-xl cursor-pointer flex items-center justify-center ${
-                          gameCategory === item ? 'bg-red-500' : ''
+                          isPrivate === item[1] ? 'bg-red-500' : ''
                         }`}
                       >
                         {item}
