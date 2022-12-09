@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { NameGameContext } from '../store/NameGameContext';
 import { SocketContext } from '../store/SocketContext';
 import ReactDOM from 'react-dom';
-import { PAGE } from './page';
+import { PAGE } from '../pages/page';
 
 const category = [
   ['Public', false],
