@@ -2,7 +2,7 @@ import RACE from './Race';
 import TOWER_SLOTS from './TowerSlots';
 import GROUP from './Group';
 
-const ALL_CARDS = [
+export const ALL_CARDS = [
   //	0
   {
     id: 0,
@@ -688,5 +688,3 @@ const ALL_CARDS = [
     group: GROUP.NONE,
   },
 ];
-
-module.exports = ALL_CARDS;
