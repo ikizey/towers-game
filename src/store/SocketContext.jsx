@@ -176,7 +176,7 @@ const SocketContextProvider = ({ children }) => {
       socket.off(SOCKET_ON.MESSAGE);
       //...
     };
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <SocketContext.Provider
