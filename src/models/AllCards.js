@@ -1,6 +1,6 @@
-import RACE from './Race';
-import TOWER_SLOTS from './TowerSlots';
-import GROUP from './Group';
+import { RACE } from './Race';
+import { TOWER_SLOTS } from './TowerSlots';
+import { GROUP } from './Group';
 
 export const ALL_CARDS = [
   //	0
