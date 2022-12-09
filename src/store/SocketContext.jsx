@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { socket } from '../socket.config.js';
 import { PlayerContext } from './playerContext.jsx';
 import { PAGE } from '../pages/page';
+import { useCallback } from 'react';
 
 export const SOCKET_ON = Object.freeze({
   JOIN_ROOM: 'join-room',
@@ -60,9 +61,9 @@ const SocketContextProvider = ({ children }) => {
   //* --Lobby
 
   //*PreGame
-  const leavePreGame = () => {
+  const leavePreGame = useCallback(() => {
     sendData('pregame-leave', {});
-  };
+  }, []);
 
   const startGame = () => {
     sendData('start-game', {});

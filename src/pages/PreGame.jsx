@@ -1,5 +1,5 @@
-import React from 'react';
-import { useContext } from 'react';
+import React, { useContext } from 'react';
+// import useLeavePreGame from '../hooks/useLeavePreGame';
 import { PlayerContext } from '../store/playerContext';
 import { SocketContext } from '../store/SocketContext';
 
@@ -13,7 +13,10 @@ const PreGame = () => {
     preGamePlayersToStart,
     preGameIsReady,
     preGameIsPrivate,
+    // leavePreGame,
   } = useContext(SocketContext);
+
+  // useLeavePreGame();
 
   return (
     <div className='bg-no-repeat bg-cover w-full flex flex-col h-screen p-10'>
