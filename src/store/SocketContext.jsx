@@ -13,6 +13,32 @@ export const SOCKET_OUT = Object.freeze({
   MESSAGE: 'message',
 });
 
+const GAME_MSG = Object.freeze({
+  NAME_ORDER_EXCHANGE: 'new-game-name-order-exchange',
+  NEW_TURN: 'new-turn',
+  PLAYER_GOT_CARDS: 'player-got-cards',
+  PLAYER_LOST_CARDS: 'player-lost-cards',
+  CARDS_DISCARDED: 'cards-discarded',
+  CARD_PLAYED: 'card-played',
+  WAR_CRY: 'war-cry',
+  GROUP: 'group',
+  GROUP_FAILED: 'group-failed',
+  CARD_LEAVE_TOWER: 'card-leave-tower',
+  PLAYER_GOT_ENG_CARDS: 'eng-got-cards',
+});
+
+const PLAYER_MSG = Object.freeze({
+  NEW_PHASE: 'new-phase',
+  CARDS_FROM_DECK: 'cards-from-deck',
+  GROUP_NONE: 'group-none',
+  GROUP_ENGINEER: 'group-engineer',
+  GROUP_ORACLE: 'group-oracle',
+  GROUP_WORKER: 'group-worker',
+  GROUP_MAGE: 'group-mage',
+  GROUP_BOMBER: 'group-bomber',
+  GROUP_SABOTEUR: 'group-saboteur',
+});
+
 export const SocketContext = createContext();
 
 const SocketContextProvider = ({ children }) => {
@@ -31,7 +57,22 @@ const SocketContextProvider = ({ children }) => {
   const [preGamePlayersToStart, setPreGamePlayersToStart] = useState(undefined);
   const [preGameIsReady, setPreGameIsReady] = useState(false);
   const [preGameIsPrivate, setPreGameIsPrivate] = useState(false);
-  //*end of preGameState.
+  //*end of preGameStates.
+
+  //*gameStates
+  const [gamePlayers, setGamePlayers] = useState([]);
+  const [gameCurrentPlayerIndex, setGameCurrentPlayerIndex] = useState();
+  const [gamePlayersCards, setGamePlayersCards] = useState([]);
+  const [gameGraveyard, setGameGraveyard] = useState([]);
+  const [gamePlayerTowersSlots, setGamePlayerTowersSlots] = useState([]); //[[{id, index},...],...] //?
+  const [gameWarCryPlayerIndex, setGameWarCryPlayerIndex] = useState(-1);
+  const [gameWarCryRace, setGameWarCryRace] = useState(-1);
+  const [gamePlayerHand, setPlayerHand] = useState([]);
+  const [gamePlayerEngHand, setPlayerEngHand] = useState([]);
+  const [gameActiveGroup, setGameActiveGroup] = useState(-1);
+  const [gameCanPlay, setGameCanPlay] = useState([]);
+  const [gameEnemyTargets, setGameEnemyTargets] = useState([]);
+  //* --gameStates
 
   const sendData = (type, data) => {
     //! add type check
@@ -172,6 +213,65 @@ const SocketContextProvider = ({ children }) => {
     });
 
     //* --PreGame
+
+    //*Game
+
+    socket.on(GAME_MSG.NAME_ORDER_EXCHANGE, ({ id, name }) => {
+      setGamePlayers(id, name);
+    });
+    socket.on(GAME_MSG.NEW_TURN, ({ playerIndex }) => {
+      setGameCurrentPlayerIndex(playerIndex);
+    });
+    socket.on(GAME_MSG.PLAYER_GOT_CARDS, ({ playerIndex, amount }) => {
+      setGamePlayersCards();
+    }); //TODO!
+    socket.on(GAME_MSG.PLAYER_LOST_CARDS, ({ playerIndex, cardIndices }) => {
+      setGamePlayersCards();
+    }); //TODO!
+    socket.on(GAME_MSG.CARDS_DISCARDED, ({ cardIds }) => {
+      setGameGraveyard((prev) => [...prev, ...cardIds]);
+    });
+    socket.on(
+      GAME_MSG.CARD_PLAYED,
+      ({ playerIndex, cardIndex, targetSlotIndex, cardId }) => {}
+    ); //TODO!
+    socket.on(GAME_MSG.WAR_CRY, ({ playerIndex, race }) => {
+      setGameWarCryPlayerIndex(playerIndex);
+      setGameWarCryRace(race);
+    });
+    // socket.on(GAME_MSG.GROUP, () => {});
+    socket.on(GAME_MSG.GROUP_FAILED, () => {}); //?
+    socket.on(
+      GAME_MSG.CARD_LEAVE_TOWER,
+      ({ playerIndex, slotIndex, cardId }) => {}
+    );
+    socket.on(GAME_MSG.PLAYER_GOT_ENG_CARDS, ({ playerIndex, amount }) => {}); //wrong?
+    // socket.on(PLAYER_MSG.NEW_PHASE, () => {});
+    socket.on(PLAYER_MSG.CARDS_FROM_DECK, ({ cardIds }) => {
+      setPlayerHand(cardIds);
+    }); //TODO!
+    socket.on(PLAYER_MSG.GROUP_NONE, ({ source }) => {
+      setGameActiveGroup(source);
+    }); //TODO!
+    socket.on(PLAYER_MSG.GROUP_ENGINEER, ({ source }) => {
+      setGameActiveGroup(source);
+    }); //TODO!
+    socket.on(PLAYER_MSG.GROUP_ORACLE, ({ source }) => {
+      setGameActiveGroup(source);
+    }); //TODO!
+    socket.on(PLAYER_MSG.GROUP_WORKER, ({ source, canPlay }) => {
+      setGameCanPlay(canPlay);
+    }); //TODO!
+    socket.on(PLAYER_MSG.GROUP_MAGE, ({ source, enemyTargets }) => {
+      setGameEnemyTargets(enemyTargets);
+    }); //TODO!
+    socket.on(PLAYER_MSG.GROUP_BOMBER, ({ source, enemyTargets }) => {
+      setGameEnemyTargets(enemyTargets);
+    }); //TODO!
+    socket.on(PLAYER_MSG.GROUP_SABOTEUR, ({ source, targets }) => {
+      setGameEnemyTargets(targets);
+    }); //TODO!
+    //* --Game
     return () => {
       socket.off(SOCKET_ON.ERROR);
       socket.off(SOCKET_ON.MESSAGE);
