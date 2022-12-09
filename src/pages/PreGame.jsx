@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-// import useLeavePreGame from '../hooks/useLeavePreGame';
+import LeavePrompt from '../components/LeavePrompt';
 import { PlayerContext } from '../store/playerContext';
 import { SocketContext } from '../store/SocketContext';
 
@@ -13,10 +13,8 @@ const PreGame = () => {
     preGamePlayersToStart,
     preGameIsReady,
     preGameIsPrivate,
-    // leavePreGame,
+    leavePreGame,
   } = useContext(SocketContext);
-
-  // useLeavePreGame();
 
   return (
     <div className='bg-no-repeat bg-cover w-full flex flex-col h-screen p-10'>
@@ -71,6 +69,7 @@ const PreGame = () => {
           </ul>
         </section>
       </div>
+      <LeavePrompt when={true} callback={leavePreGame} />
     </div>
   );
 };

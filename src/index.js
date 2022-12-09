@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { BrowserRouter } from 'react-router-dom';
+import { unstable_HistoryRouter as HistoryRouter } from 'react-router-dom';
+import { createBrowserHistory } from 'history';
 import App from './App';
 import PlayerContextProvider from './store/playerContext';
 import SocketContextProvider from './store/SocketContext';
@@ -10,7 +11,7 @@ import './index.css';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <BrowserRouter>
+    <HistoryRouter history={createBrowserHistory()}>
       <PlayerContextProvider>
         <SocketContextProvider>
           <NameGameContextProvider>
@@ -18,6 +19,6 @@ root.render(
           </NameGameContextProvider>
         </SocketContextProvider>
       </PlayerContextProvider>
-    </BrowserRouter>
+    </HistoryRouter>
   </React.StrictMode>
 );
