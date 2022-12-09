@@ -1,6 +1,5 @@
 import React, { useRef, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import papirus from '../Assets/papirus.jpg';
 import { PlayerContext } from '../store/playerContext';
 import { PAGE } from './page';
 
@@ -20,12 +19,7 @@ const Home = () => {
   };
 
   return (
-    <div
-      style={{
-        backgroundImage: `url(${papirus})`,
-      }}
-      className='bg-no-repeat bg-cover w-full flex flex-col h-screen'
-    >
+    <div className='bg-no-repeat bg-cover w-full flex flex-col h-screen'>
       <div className='bg-orange-300'>
         <p className='pb-6 text-center text-6xl text-rose-700 font-bold'>
           Tower Game

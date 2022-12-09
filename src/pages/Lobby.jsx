@@ -1,6 +1,5 @@
 import React, { useContext, useState } from 'react';
 import { useEffect } from 'react';
-import papirus from '../Assets/papirus.jpg';
 import { SocketContext } from '../store/SocketContext';
 import CreateGame from '../components/CreateGame';
 
@@ -29,15 +28,10 @@ const Lobby = () => {
   useEffect(() => {
     emitMe();
     listPreGames();
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
-    <div
-      style={{
-        backgroundImage: `url(${papirus})`,
-      }}
-      className='z-10 bg-no-repeat bg-cover w-full flex flex-col h-screen p-8'
-    >
+    <div className='z-10 bg-no-repeat bg-cover w-full flex flex-col h-screen p-8'>
       <header>
         <p className='z-10 pb-6 text-center text-5xl text-rose-700 font-bold'>
           Tower Game

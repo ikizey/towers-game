@@ -1,6 +1,5 @@
 import React from 'react';
 import { useContext } from 'react';
-import papirus from '../Assets/papirus.jpg';
 import { PlayerContext } from '../store/playerContext';
 import { SocketContext } from '../store/SocketContext';
 
@@ -17,12 +16,7 @@ const PreGame = () => {
   } = useContext(SocketContext);
 
   return (
-    <div
-      style={{
-        backgroundImage: `url(${papirus})`,
-      }}
-      className='bg-no-repeat bg-cover w-full flex flex-col h-screen p-10'
-    >
+    <div className='bg-no-repeat bg-cover w-full flex flex-col h-screen p-10'>
       <header>
         <p className='pb-6 text-center text-5xl text-rose-700 font-bold'>
           Tower Game
