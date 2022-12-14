@@ -4,6 +4,7 @@ import { socket } from '../socket.config.js';
 import { PlayerContext } from './playerContext.jsx';
 import { PAGE } from '../pages/page';
 import { useCallback } from 'react';
+import usePreGame from '../hooks/usePreGame.jsx';
 
 export const SOCKET_ON = Object.freeze({
   JOIN_ROOM: 'join-room',
@@ -50,13 +51,22 @@ const SocketContextProvider = ({ children }) => {
   const [lobbyPlayersList, setLobbyPlayersList] = useState([]);
   const [lobbyGames, setLobbyGames] = useState([]);
   //*preGameStates:
-  const [preGameId, setPreGameId] = useState('');
-  const [preGameName, setPreGameName] = useState('');
-  const [preGamePlayers, setPreGamePlayers] = useState([]);
-  const [preGameIsAdmin, setPreGameIsAdmin] = useState(false);
-  const [preGamePlayersToStart, setPreGamePlayersToStart] = useState(undefined);
-  const [preGameIsReady, setPreGameIsReady] = useState(false);
-  const [preGameIsPrivate, setPreGameIsPrivate] = useState(false);
+  const {
+    preGameId,
+    setPreGameId,
+    preGameName,
+    setPreGameName,
+    preGamePlayers,
+    setPreGamePlayers,
+    preGameIsAdmin,
+    setPreGameIsAdmin,
+    preGamePlayersToStart,
+    setPreGamePlayersToStart,
+    preGameIsReady,
+    setPreGameIsReady,
+    preGameIsPrivate,
+    setPreGameIsPrivate,
+  } = usePreGame();
   //*end of preGameStates.
 
   //*gameStates
