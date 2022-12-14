@@ -3,5 +3,5 @@
 @tailwind utilities;
 
 body {
-  background-image: url('./Assets/papirus.jpg');
+  background: url('./Assets/papirus.jpg') 100% 100%/cover no-repeat;
 }
